@@ -17,9 +17,6 @@ import com.example.demo.mybatis.mapper.PersonMapper;
 /**
  * 検索サービス
  */
-/**
- * 
- */
 @Service
 public class SearchService {
 

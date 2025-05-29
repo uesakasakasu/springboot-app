@@ -11,9 +11,6 @@ import com.example.demo.mybatis.mapper.PersonMapper;
 /**
  * 削除サービス
  */
-/**
- * 
- */
 @Service
 public class DeleteService {
 
