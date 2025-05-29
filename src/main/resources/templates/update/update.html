@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common/head :: head_fragment(title = '更新画面', scripts = ~{::script}, links = ~{::link})}"></head>
+
+<body>
+	<div class="container">
+		<h1>更新画面</h1>
+		<form method="post" action="update" onsubmit="return confirm('更新しますか？')">
+			<ul class="formUl">
+				<li><label class="formLabel" for="personId">ID</label><input type="number" name="personId" id="personId" min="1" th:value="*{personId}"></li>
+				<li><label class="formLabel" for="name">名前</label><input type="text" name="name" id="name"></li>
+				<li><label class="formLabel" for="age">年齢</label><input type="number" name="age" id="age" max="200" min="0"></li>
+				<li>
+					<label class="formLabel" for="gender">性別</label>
+					<select name="gender" id="gender">
+						<option value="0" selected>選択してください</option>
+						<option value="1">男性</option>
+						<option value="2">女性</option>
+					</select>
+				</li>
+				<li><label class="formLabel" for="tel">電話番号</label><input type="tel" name="tel" id="tel" pattern="[\d\-]*"></li>
+				<li><label class="formLabel" for="mail">メールアドレス</label><input type="email" name="mail" id="mail"></li>
+			</ul>
+			<button type="submit" class="btn btn-primary">更新</button>
+		</form>
+
+		<button type="submit" class="btn btn-info" onclick="location.href='/..'" style="margin-top: 10px;">メニュー</button>
+		<!--<button type="submit" class="btn btn-info" onclick="location.href='/..'" style="margin-top: 10px;">メニューdebug</button>-->
+	</div>
+</body>
+
+</html>

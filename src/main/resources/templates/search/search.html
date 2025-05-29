@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="	~{common/head :: head_fragment(title = '検索画面', scripts = ~{::script}, links = ~{::link})}"></head>
+
+<body>
+	<div class="container">
+		<h1>検索画面</h1>
+		<form method="get" action="search" th:object="${searchForm}">
+			<ul class="formUl">
+				<li><label class="formLabel" for="personId">ID</label><input type="number" name="personId" id="personId" min="1" th:value="*{personId}"></li>
+				<li><label class="formLabel" for="name">名前</label><input type="text" name="name" id="name" th:value="*{name}"></li>
+				<li><label class="formLabel" for="age">年齢</label><input type="number" name="age" id="age" max="200" min="0" th:value="*{age}"></li>
+				<li>
+					<label class="formLabel" for="gender">性別</label>
+					<select name="gender" id="gender">
+						<option th:value="0" th:selected="*{gender} == '0'"></option>
+						<option th:value="1" th:selected="*{gender} == '1'">男性</option>
+						<option th:value="2" th:selected="*{gender} == '2'">女性</option>
+					</select>
+				</li>
+				<li><label class="formLabel" for="tel">電話番号</label><input type="tel" name="tel" id="tel" pattern="[\d\-]*" th:value="*{tel}"></li>
+				<li><label class="formLabel" for="mail">メールアドレス</label><input type="email" name="mail" id="mail" th:value="*{mail}"></li>
+			</ul>
+			<button type="submit" class="btn btn-secondary">検索</button>
+		</form>
+
+		<hr>
+		<!-- 検索結果 -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>名前</th>
+					<th>年齢</th>
+					<th>性別</th>
+					<th>電話番号</th>
+					<th>メールアドレス</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- resultListのresultオブジェクトをバインドして表示 -->
+				<tr th:each="result : ${resultList}" th:object="${result}" class="align-middle">
+					<td th:text="*{personId}"></td>
+					<td th:text="*{name}"></td>
+					<td th:text="*{age}"></td>
+					<td th:text="*{gender}"></td>
+					<td th:text="*{tel}"></td>
+					<td th:text="*{mail}"></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<button type="submit" class="btn btn-info" onclick="location.href='/..'">メニュー</button>
+	</div>
+</body>
+
+</html>

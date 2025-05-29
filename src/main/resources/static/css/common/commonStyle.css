@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+.formUl {
+	list-style: none;
+
+	li {
+		margin-top: 10px;
+	}
+
+	.formLabel {
+		width: 100px;
+		float: left;
+	}
+}

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ★インターフェースを定義することで、javaとxmlを紐づける -->
+<mapper namespace="com.example.demo.mybatis.mapper.PersonMapper">
+
+	<!-- ★実行するSQLを定義する。id属性はｊａｖａのメソッド名に該当する -->
+	<insert id="insert"
+		parameterType="com.example.demo.mybatis.entity.Person">
+		<!-- ★parameterTypeは引数の型を指定すると、指定した型の変数（プロパティー）とＳＱＬ内のパラメータをマッピングしてくれる -->
+		insert into person
+		(
+			name
+			, age
+			, gender
+			, tel
+			, mail
+			, insert_user
+			, insert_datetime
+		)
+		values(
+			#{name}
+			, #{age}
+			, #{gender}
+			, #{tel}
+			, #{mail}
+			, #{insertUser}
+			, #{insertDatetime}
+		);
+	</insert>
+
+	<select id="search"
+		parameterType="com.example.demo.mybatis.entity.Person"
+		resultType="com.example.demo.mybatis.entity.Person">
+		select * from person
+		<where>
+			<if test="personId != null and personId != ''">
+				person_id = #{personId}
+			</if>
+			<if test="name != null and name != ''">
+				and name = #{name}
+			</if>
+			<if test="age != null and age != 0">
+				and age = #{age}
+			</if>
+			<if test="gender != null and gender != 0">
+				and gender = #{gender}
+			</if>
+			<if test="tel != null and tel != ''">
+				and tel = #{tel}
+			</if>
+			<if test="mail != null and mail != ''">
+				and mail = #{mail}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findById"
+		parameterType="com.example.demo.mybatis.entity.Person"
+		resultType="com.example.demo.mybatis.entity.Person">
+		select * from person
+		<where>
+			<if test="personId != null and personId != ''">
+				person_id = #{personId}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectAll"
+		resultType="com.example.demo.mybatis.entity.Person">
+		<!-- ★resultTypeは戻り値の型。指定した型の変数（プロパティー）とＳＱＬ実行結果のカラム名をマッピングしてくれる -->
+		select * from person
+	</select>
+
+	<update id="update"
+		parameterType="com.example.demo.mybatis.entity.Person">
+		update person
+		set 
+			<!-- ★ifタグ等を活用し、動的SQLを実現 -->
+			<if test="name != null and name != ''">
+				name = #{name}
+			</if>
+			<if test="age != null and age != 0">
+				, age = #{age}
+			</if>
+			<if test="gender != null and gender != 0">
+				, gender = #{gender}
+			</if>
+			<if test="tel != null and tel != ''">
+				, tel = #{tel}
+			</if>
+			<if test="mail != null and mail != ''">
+				, mail = #{mail}
+			</if>
+		where person_id = #{personId}
+	</update>
+	
+	<delete id="delete">
+		delete from person where person_id = #{personId}
+	</delete>
+
+</mapper>

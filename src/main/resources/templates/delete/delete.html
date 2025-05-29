@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="	~{common/head :: head_fragment(title = '削除画面', scripts = ~{::script}, links = ~{::link})}"></head>
+
+<body>
+	<div class="container">
+		<h1>削除画面</h1>
+		<form method="post" action="delete" th:object="${deleteForm}">
+			<ul class="formUl">
+				<li><label class="formLabel" for="personId">ID</label><input type="number" name="personId" id="personId" min="1" th:value="*{personId}"></li>
+			</ul>
+			<button type="submit" class="btn btn-secondary">削除</button>
+		</form>
+
+		<hr>
+		<button type="submit" class="btn btn-info" onclick="location.href='/..'">メニュー</button>
+	</div>
+</body>
+
+</html>

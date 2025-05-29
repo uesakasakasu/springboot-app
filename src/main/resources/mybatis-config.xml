@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!--設定 -->
+	<settings>
+		<!-- キャメルケース自動マッピング -->
+		<!-- （例）テーブル検索をすると カラム名：person_id　で結果が返ってくるが、java的にはpersonIdとして扱いたい。そんな時に自動変換してくれる設定 -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+
+	<!-- mapperファイル（xml)の配置場所 -->
+	<mappers>
+		<mapper resource="mybatis/mapper/PersonMapper.xml" />
+	</mappers>
+</configuration>
