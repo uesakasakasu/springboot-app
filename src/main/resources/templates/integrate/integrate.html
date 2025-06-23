@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang = "ja" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="	~{common/head :: head_fragment(title = '検索画面', scripts = ~{::script}, links = ~{::link})}">
+	
+</head>
+
+<body>
+	<h1>ユーザー一覧画面</h1>
+	<!-- 新規登録画面へのアンカーリンクを追加 -->
+	<a th:href="@{/register/input}">新規登録</a>
+	
+	<!-- 検索ボックス -->
+	<!-- 入力されたID（personId）はクエリパラメータとして /searchItg エンドポイントにGETリクエスト（method="get"）で送信される -->
+	<form th:action="@{/searchItg}" method="get">
+		<input type="text" name="personId" placeholder="IDを入力してください">
+		<button type="submit">検索</button>
+	</form>
+	
+	<!-- 検索対象の企業IDが未登録の場合にメッセージを表示 -->
+	<div th:if="!${resultList}">
+		<p>登録されたユーザーはいません。</p>
+	</div>
+	
+	<!-- 登録ユーザー一覧表示 -->
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>名前</th>
+				<th>年齢</th>
+				<th>性別</th>
+				<th>電話番号</th>
+				<th>メールアドレス</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="result:${resultList}" th:object="${result}">
+				<td th:text="*{personId}"></td>
+				<td th:text="*{name}"></td>
+				<td th:text="*{age}"></td>
+				<td th:text="*{gender}"></td>
+				<td th:text="*{tel}"></td>
+				<td th:text="*{mail}"></td>
+				<td>
+					<!-- 一旦ダミーリンクを設定 -->
+					<a th:href="@{/detail/{id}(id=${result.personId})}">詳細</a>
+					<a th:href="@{#}">編集</a>
+					<a th:href="@{#}">削除</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<button type="submit" class="btn btn-info" onclick="location.href='/..'">メニュー</button>
+	<!-- 登録ユーザー一覧表示 -->
+</body>
+
+</html>

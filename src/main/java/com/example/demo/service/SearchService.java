@@ -37,6 +37,38 @@ public class SearchService {
 		List<Person> personList = mapper.search(person);
 		return entityToDto(personList);
 	}
+	
+	/**
+	 * 検索処理実行
+	 * @param form
+	 * @return List<SearchResultDto>
+	 */
+	public List<SearchResultDto> executeById(Integer personId) {
+		logger.debug("SearchService.executeById");
+		List<Person> personList = mapper.findById(personId);
+		return entityToDto(personList);
+	}
+	
+	/**
+	 * 検索処理実行
+	 * @param form
+	 * @return List<SearchResultDto>
+	 */
+	public List<Person> getPersonById(Integer personId) {
+		logger.debug("SearchService.getPersonById");
+		List<Person> personList = mapper.findById(personId);
+		return personList;
+	}
+	
+	/**
+	 * 全件検索処理実行
+	 * @return List<SearchResultDto>
+	 */
+	public List<SearchResultDto> executeAll() {
+		logger.debug("SearchService.execute");
+		List<Person> personList = mapper.selectAll();
+		return entityToDto(personList);
+	}
 
 	/**
 	 * Form to Entity変換処理

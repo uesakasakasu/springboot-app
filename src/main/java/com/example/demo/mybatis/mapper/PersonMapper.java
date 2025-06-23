@@ -29,6 +29,13 @@ public interface PersonMapper {
 	public List<Person> search(Person person);
 	
 	/**
+	 * select
+	 * @param personId
+	 * @return List<Person>
+	 */
+	public List<Person> findById(Integer personId);
+	
+	/**
 	 * 全件検索
 	 * @param person
 	 * @return List<Person>
