@@ -25,9 +25,17 @@ public class DeleteService {
 	 * @param form
 	 */
 	public void execute(DeleteForm form) {
-		logger.debug("RegisterService.execute");
+		logger.debug("DeleterService.execute");
 		Integer personId = formToID(form);
-
+		mapper.delete(personId);
+	}
+	
+	/**
+	 * 削除処理実行
+	 * @param form
+	 */
+	public void deletePerson(Integer personId) {
+		logger.debug("deletePerson");
 		mapper.delete(personId);
 	}
 

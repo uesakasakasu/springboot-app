@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,9 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dto.SearchResultDto;
-import com.example.demo.form.DeleteForm;
 import com.example.demo.form.InputForm;
 import com.example.demo.form.PersonForm;
 import com.example.demo.service.DeleteService;
@@ -40,7 +41,18 @@ public class IntegrateController {
 	UpdateService update;
 	@Autowired
 	DeleteService delete;
-
+	
+	/**
+	 * 統合画面表示
+	 * @return integrate/integrate.html
+	 */
+	@GetMapping("showIntegrate")
+	private String showIntegrate(Model model) {
+		logger.debug("showIntegrate");
+		model.addAttribute("resultList", search.executeAll());
+		return "integrate/integrate";
+	}
+	
 	/**
 	 * 全件検索処理
 	 * @param form
@@ -87,7 +99,7 @@ public class IntegrateController {
 	 * ユーザー情報を編集するためのフォーム画面を表示する処理
 	 * @param form
 	 * @param personId, model
-	 * @return integrate/detail.html
+	 * @return integrate/edit.html
 	 */
 	@GetMapping("edit")
 	public String editPerson(@RequestParam Integer personId, Model model) {
@@ -100,7 +112,7 @@ public class IntegrateController {
 	 * ユーザー情報更新処理
 	 * @param form
 	 * @param personId, model
-	 * @return integrate/detail.html
+	 * @return showIntegrate
 	 */
 	@PostMapping("edit")
 	public String updatePerson(@ModelAttribute PersonForm personForm, BindingResult bindingResult) {
@@ -114,45 +126,58 @@ public class IntegrateController {
 		return "redirect:/showIntegrate";
 	}
 	
+	/**
+	 * ユーザー情報削除処理
+	 * PathVariable により、URLの {id} 部分が id パラメータとして取得される。
+	 * RedirectAttributesを使用して、削除が成功したか、エラーが発生したかに応じてメッセージを設定し、
+	 * リダイレクト先ページ(一覧画面)にメッセージを渡す。
+	 * @param form
+	 * @param personId, model
+	 * @return showIntegrate
+	 */
+	@GetMapping("/delete/{id}")
+	public String deletePerson(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+	    try {
+	    	delete.deletePerson(id);
+	        redirectAttributes.addFlashAttribute("successMessage", "ユーザー情報が正常に削除されました。");
+	    } catch (EmptyResultDataAccessException e) {
+	    	// EmptyResultDataAccessException：削除対象が見つからない場合に発生する例外で、エラーメッセージを設定する。
+	    	// 「addFlashAttribute」にてフラッシュメッセージを設定している
+	        redirectAttributes.addFlashAttribute("errorMessage", "指定されたIDが見つかりませんでした。");
+	    } catch (Exception e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "ユーザー情報の削除に失敗しました。");
+	    }
+	    return "redirect:/showIntegrate";
+	}
 	
-	
-	// 以下、未実装
+	/**
+	 * ユーザー情報を登録するためのフォーム画面を表示する処理
+	 * @param form
+	 * @param personId, model
+	 * @return integrate/edit.html
+	 */
+	@GetMapping("addPerson")
+	public String showRegisterForm(Model model) {
+		logger.debug("showRegisterForm");
+		model.addAttribute("inputForm", new InputForm());
+		return "integrate/input";
+	}
 	
 	/**
 	 * 登録処理
 	 * @param form
-	 * @return register/complete.html
+	 * @return showIntegrate
 	 */
-	@PostMapping("registerItg")
-	private String registerItg(@ModelAttribute InputForm form) {
-		logger.debug("register");
-		register.execute(form);
-        // return "integrate/integrate";
-		return "redirect:/integrate/integrate";
-	}
-	
-	/**
-	 * 更新処理
-	 * @param form
-	 * @return update/complete.html
-	 */
-	@PostMapping("updateItg")
-	private String updateItg(@ModelAttribute PersonForm form) {
-		logger.debug("update");
-		update.execute(form);
-		return "integrate/integrate";
-	}
-	
-	/**
-	 * 削除処理
-	 * @param form
-	 * @return delete/complete.html
-	 */
-	@PostMapping("deleteItg")
-	private String deleteItg(@ModelAttribute DeleteForm form) {
-		logger.debug("delete");
-		delete.execute(form);
-		return "integrate/integrate";
+	@PostMapping("addPerson")
+	private String addPerson(@ModelAttribute InputForm form, Model model, RedirectAttributes redirectAttributes) {
+		logger.debug("addPerson");
+		try {
+			register.execute(form);
+			redirectAttributes.addFlashAttribute("successMessage", "ユーザー情報が正常に追加されました。");
+		} catch (Exception e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "ユーザー情報の追加に失敗しました。");
+	    }
+		return "redirect:/showIntegrate";
 	}
 
 }

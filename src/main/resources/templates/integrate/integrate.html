@@ -8,7 +8,7 @@
 <body>
 	<h1>ユーザー一覧画面</h1>
 	<!-- 新規登録画面へのアンカーリンクを追加 -->
-	<a th:href="@{/register/input}">新規登録</a>
+	<a th:href="@{/addPerson}">新規登録</a>
 	
 	<!-- 検索ボックス -->
 	<!-- 入力されたID（personId）はクエリパラメータとして /searchItg エンドポイントにGETリクエスト（method="get"）で送信される -->
@@ -16,6 +16,15 @@
 		<input type="text" name="personId" placeholder="IDを入力してください">
 		<button type="submit">検索</button>
 	</form>
+	
+	<!-- 削除処理が正常に完了した場合の成功メッセージを表示 -->
+    <div th:if="${successMessage}">
+        <p th:text="${successMessage}"></p>
+    </div>
+    <!-- 削除対象が見つからなかった場合やその他のエラーが発生した場合に、エラーメッセージを表示 -->
+    <div th:if="${errorMessage}">
+        <p th:text="${errorMessage}"></p>
+    </div>
 	
 	<!-- 検索対象の企業IDが未登録の場合にメッセージを表示 -->
 	<div th:if="!${resultList}">
@@ -45,13 +54,14 @@
 				<td>
 					<a th:href="@{/detail/{personId}(personId=${result.personId})}">詳細</a>
 					<a th:href="@{/edit(personId=${result.personId})}">編集</a>
-					<!-- 一旦ダミーリンクを設定 -->
-					<a th:href="@{#}">削除</a>
+					<a th:href="@{/delete/{personId}(personId=${result.personId})}"
+					   onclick="return confirm('本当に削除しますか？');">削除</a>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<button type="submit" class="btn btn-info" onclick="location.href='/..'">メニュー</button>
+	<!--<button type="submit" class="btn btn-info" onclick="location.href='/..'">メニュー</button>-->
+	<button type="submit" onclick="location.href='/..'">メニュー</button>
 	<!-- △登録ユーザー一覧表示 -->
 </body>
 

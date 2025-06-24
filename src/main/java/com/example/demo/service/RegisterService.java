@@ -30,7 +30,6 @@ public class RegisterService {
 	public void execute(InputForm form) {
 		logger.debug("RegisterService.execute");
 		Person person = formToEntity(form);
-
 		mapper.insert(person);
 	}
 

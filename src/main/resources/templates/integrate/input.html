@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>新規登録画面</title>
+</head>
+
+<body>
+	<h1>ユーザー情報登録フォーム</h1>
+	<a th:href="@{/showIntegrate}">一覧画面へ戻る</a>
+	<form th:action="@{/addPerson}" th:object="${inputForm}" method="post">
+		<table>
+			<tr>
+				<td><label for="name">名前：</label></td>
+				<td><input type="text" th:field="*{name}" /></td>
+			</tr>
+			<tr>
+				<td><label for="age">年齢：</label></td>
+				<td><input type="number" th:field="*{age}" name="age" id="age" max="150" min="0">
+				</td>
+			</tr>
+			<tr>
+				<td><label for="gender">性別：</label></td>
+				<td><input type="text" th:field="*{gender}" /></td>
+			</tr>
+			<tr>
+				<td><label for="tel">電話番号：</label></td>
+				<td><input type="tel" th:field="*{tel}" name="tel" id="tel" pattern="[\d\-]*"></td>
+			</tr>
+			<tr>
+				<td><label for="mail">メールアドレス：</label></td>
+				<td><input type="email" th:field="*{mail}" name="mail" id="mail"></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="登録する" /></td>
+			</tr>
+		</table>
+	</form>
+</body>
+
+</html>

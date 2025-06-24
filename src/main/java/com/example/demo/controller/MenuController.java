@@ -76,14 +76,5 @@ public class MenuController {
 		return "delete/delete";
 	}
 	
-	/**
-	 * 統合画面表示
-	 * @return integrate/integrate.html
-	 */
-	@GetMapping("showIntegrate")
-	private String showIntegrate(Model model) {
-		logger.debug("showIntegrate");
-		model.addAttribute("resultList", search.executeAll());
-		return "integrate/integrate";
-	}
+	
 }
