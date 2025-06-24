@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.demo.dto.SearchResultDto;
-import com.example.demo.form.SearchForm;
+import com.example.demo.form.PersonForm;
 import com.example.demo.service.SearchService;
 
 /**
@@ -33,7 +33,7 @@ public class SearchController {
 	 * @return search/search.html
 	 */
 	@GetMapping("search")
-	private String search(@ModelAttribute SearchForm form, Model model) {
+	private String search(@ModelAttribute PersonForm form, Model model) {
 		logger.debug("search");
 		List<SearchResultDto> resultList = search.execute(form);
 

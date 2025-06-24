@@ -22,7 +22,7 @@
 		<p>登録されたユーザーはいません。</p>
 	</div>
 	
-	<!-- 登録ユーザー一覧表示 -->
+	<!-- ▽登録ユーザー一覧表示 -->
 	<table>
 		<thead>
 			<tr>
@@ -43,16 +43,16 @@
 				<td th:text="*{tel}"></td>
 				<td th:text="*{mail}"></td>
 				<td>
+					<a th:href="@{/detail/{personId}(personId=${result.personId})}">詳細</a>
+					<a th:href="@{/edit(personId=${result.personId})}">編集</a>
 					<!-- 一旦ダミーリンクを設定 -->
-					<a th:href="@{/detail/{id}(id=${result.personId})}">詳細</a>
-					<a th:href="@{#}">編集</a>
 					<a th:href="@{#}">削除</a>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	<button type="submit" class="btn btn-info" onclick="location.href='/..'">メニュー</button>
-	<!-- 登録ユーザー一覧表示 -->
+	<!-- △登録ユーザー一覧表示 -->
 </body>
 
 </html>

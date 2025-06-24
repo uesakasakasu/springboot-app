@@ -8,7 +8,7 @@ import lombok.Data;
  * 検索画面form
  */
 @Data
-public class SearchForm implements Serializable {
+public class PersonForm implements Serializable {
 	private Integer personId;
 	private String name;
 	private Integer age;

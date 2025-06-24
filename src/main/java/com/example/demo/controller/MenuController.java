@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.demo.form.DeleteForm;
-import com.example.demo.form.SearchForm;
+import com.example.demo.form.PersonForm;
 import com.example.demo.service.SearchService;
 
 /**
@@ -50,7 +50,7 @@ public class MenuController {
 	 * @return search/search.html
 	 */
 	@GetMapping("showSearch")
-	private String showSearch(@ModelAttribute SearchForm form, Model model) {
+	private String showSearch(@ModelAttribute PersonForm form, Model model) {
 		logger.debug("showSearch");
 		model.addAttribute("display", false);
 		return "search/search";

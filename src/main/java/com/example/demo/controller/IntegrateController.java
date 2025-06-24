@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.dto.SearchResultDto;
 import com.example.demo.form.DeleteForm;
 import com.example.demo.form.InputForm;
-import com.example.demo.form.SearchForm;
+import com.example.demo.form.PersonForm;
 import com.example.demo.service.DeleteService;
 import com.example.demo.service.RegisterService;
 import com.example.demo.service.SearchService;
@@ -50,7 +51,6 @@ public class IntegrateController {
 	private String selectAll(@ModelAttribute Model model) {
 		logger.debug("selectAll");
 		List<SearchResultDto> resultList = search.executeAll();
-
 		model.addAttribute("resultList", resultList);
 		return "integrate/integrate";
 	}
@@ -70,19 +70,53 @@ public class IntegrateController {
 	}
 	
 	/**
-	 * 詳細情報表示処理
+	 * ユーザーの詳細情報表示処理
 	 * @param form
 	 * @param id, model
 	 * @return integrate/detail.html
 	 */
-	@GetMapping("detail/{id}")
-	private String detailPerson(@PathVariable Integer id, Model model) {
+	@GetMapping("detail/{personId}")
+	private String detailPerson(@PathVariable Integer personId, Model model) {
 		logger.debug("detailPerson");
-		//List<Person> result = search.getPersonById(id);
-		List<SearchResultDto> resultList = search.executeById(id);
+		List<SearchResultDto> resultList = search.executeById(personId);
 		model.addAttribute("resultList", resultList);
 		return "integrate/detail";
 	}
+	
+	/**
+	 * ユーザー情報を編集するためのフォーム画面を表示する処理
+	 * @param form
+	 * @param personId, model
+	 * @return integrate/detail.html
+	 */
+	@GetMapping("edit")
+	public String editPerson(@RequestParam Integer personId, Model model) {
+		logger.debug("editPerson");
+		model.addAttribute("personForm", search.getEditPerson(personId));
+		return "integrate/edit";
+	}
+	
+	/**
+	 * ユーザー情報更新処理
+	 * @param form
+	 * @param personId, model
+	 * @return integrate/detail.html
+	 */
+	@PostMapping("edit")
+	public String updatePerson(@ModelAttribute PersonForm personForm, BindingResult bindingResult) {
+		logger.debug("updatePerson");
+		
+		if(bindingResult.hasErrors()) {
+			return "edit";
+		}
+		
+		update.updatePerson(personForm);
+		return "redirect:/showIntegrate";
+	}
+	
+	
+	
+	// 以下、未実装
 	
 	/**
 	 * 登録処理
@@ -103,7 +137,7 @@ public class IntegrateController {
 	 * @return update/complete.html
 	 */
 	@PostMapping("updateItg")
-	private String updateItg(@ModelAttribute SearchForm form) {
+	private String updateItg(@ModelAttribute PersonForm form) {
 		logger.debug("update");
 		update.execute(form);
 		return "integrate/integrate";

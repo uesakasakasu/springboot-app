@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.demo.form.SearchForm;
+import com.example.demo.form.PersonForm;
 import com.example.demo.service.UpdateService;
 
 /**
@@ -28,7 +28,7 @@ public class UpdateController {
 	 * @return update/complete.html
 	 */
 	@PostMapping("update")
-	private String register(@ModelAttribute SearchForm form) {
+	private String register(@ModelAttribute PersonForm form) {
 		logger.debug("update");
 		update.execute(form);
 		return "update/complete";

@@ -7,10 +7,10 @@ import lombok.Data;
  */
 @Data
 public class SearchResultDto {
-	Integer personId;
-	String name;
-	Integer age;
-	String gender;
-	String tel;
-	String mail;
+	Integer		personId;
+	String		name;
+	Integer		age;
+	String		gender;
+	String		tel;
+	String		mail;
 }

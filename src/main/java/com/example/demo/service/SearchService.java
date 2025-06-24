@@ -7,10 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.common.define.Gender;
 import com.example.demo.dto.SearchResultDto;
-import com.example.demo.form.SearchForm;
+import com.example.demo.form.PersonForm;
 import com.example.demo.mybatis.entity.Person;
 import com.example.demo.mybatis.mapper.PersonMapper;
 
@@ -31,13 +32,13 @@ public class SearchService {
 	 * @param form
 	 * @return List<SearchResultDto>
 	 */
-	public List<SearchResultDto> execute(SearchForm form) {
+	public List<SearchResultDto> execute(PersonForm form) {
 		logger.debug("SearchService.execute");
 		Person person = formToEntity(form);
 		List<Person> personList = mapper.search(person);
 		return entityToDto(personList);
 	}
-	
+
 	/**
 	 * 検索処理実行
 	 * @param form
@@ -48,18 +49,7 @@ public class SearchService {
 		List<Person> personList = mapper.findById(personId);
 		return entityToDto(personList);
 	}
-	
-	/**
-	 * 検索処理実行
-	 * @param form
-	 * @return List<SearchResultDto>
-	 */
-	public List<Person> getPersonById(Integer personId) {
-		logger.debug("SearchService.getPersonById");
-		List<Person> personList = mapper.findById(personId);
-		return personList;
-	}
-	
+
 	/**
 	 * 全件検索処理実行
 	 * @return List<SearchResultDto>
@@ -71,11 +61,34 @@ public class SearchService {
 	}
 
 	/**
+	 * ユーザー情報更新フォームの準備（登録済みユーザー情報の取得）
+	 * 引数で受け取った personId で指定されたユーザー情報を PersonForm に詰めて返すメソッド。
+	 * @param personId
+	 * @return SearchForm
+	 */
+	@Transactional
+	public PersonForm getEditPerson(Integer personId) {
+		// データベースから情報を取得
+		List<Person> personList = mapper.findById(personId);
+		Person person = personList.get(0);
+		
+		// SearchFormオブジェクトを作成してプロパティを設定
+		PersonForm form = new PersonForm();
+		form.setPersonId(personId);
+		form.setName(person.getName());
+		form.setAge(person.getAge());
+		form.setGender(person.getGender());
+		form.setTel(person.getTel());
+		form.setMail(person.getMail());
+		return form;
+	}
+
+	/**
 	 * Form to Entity変換処理
 	 * @param form
 	 * @return Person
 	 */
-	private Person formToEntity(SearchForm form) {
+	private Person formToEntity(PersonForm form) {
 		Person person = new Person();
 		person.setPersonId(form.getPersonId());
 		person.setName(form.getName());
