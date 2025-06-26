@@ -2,7 +2,16 @@
 <html lang = "ja" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="	~{common/head :: head_fragment(title = '検索画面', scripts = ~{::script}, links = ~{::link})}">
-	
+	<link href="../../static/css/common/commonStyle.css" rel="stylesheet" type="text/css" media="all">
+<!--	<style type="text/css">-->
+<!--		example3 {-->
+<!--			color:#333333;-->
+<!--			font-size: 1.5em;-->
+<!--		}-->
+<!--		table{-->
+<!--			color: aqua;-->
+<!--		}-->
+<!--	</style>-->
 </head>
 
 <body>
@@ -13,7 +22,7 @@
 	<!-- 検索ボックス -->
 	<!-- 入力されたID（personId）はクエリパラメータとして /searchItg エンドポイントにGETリクエスト（method="get"）で送信される -->
 	<form th:action="@{/searchItg}" method="get">
-		<input type="text" name="personId" placeholder="IDを入力してください">
+		<input type="text" name="personId"  placeholder="IDを入力してください" pattern="[\d]*" title="数字のみで入力してください。" />
 		<button type="submit">検索</button>
 	</form>
 	
@@ -32,7 +41,7 @@
 	</div>
 	
 	<!-- ▽登録ユーザー一覧表示 -->
-	<table>
+	<table border=1>
 		<thead>
 			<tr>
 				<th>ID</th>
